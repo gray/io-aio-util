@@ -11,6 +11,7 @@ WriteMakefile(
     PREREQ_PM => {
         'File::Spec::Functions' => 0,
         'IO::AIO'               => 2,
+        'POSIX'                 => 0,
         'Test::More'            => 0,
       },
     (eval { ExtUtils::MakeMaker->VERSION(6.46) } ? (
