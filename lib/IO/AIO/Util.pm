@@ -8,7 +8,7 @@ use IO::AIO 2;
 use File::Spec::Functions qw(splitpath splitdir catpath catdir);
 use POSIX ();
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 our @EXPORT_OK = qw(aio_mkpath aio_mktree);
 
 sub aio_mkpath ($$;$) {

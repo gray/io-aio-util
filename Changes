@@ -1,5 +1,9 @@
 Revision history for IO-AIO-Util
 
+0.07 Wed May 13 22:26:25 UTC 2009
+    - Used warnings and updated prereqs for higher kwalitee.
+    - Added link to repository.
+
 0.06 Sat May 24 03:37:38 UTC 2008
     - Stopped using aio_block, as it disappeared from IO::AIO 3.
 
