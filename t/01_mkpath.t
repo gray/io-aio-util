@@ -4,6 +4,7 @@ use Test::More tests => 11;
 use IO::AIO::Util qw(aio_mkpath);
 use File::Spec::Functions qw(catdir);
 use File::Temp qw(tempdir tempfile);
+use POSIX ();
 
 # Copied from IO::AIO tests
 sub pcb {
