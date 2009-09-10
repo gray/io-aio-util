@@ -9,6 +9,8 @@ use File::Spec::Functions qw(splitpath splitdir catpath catdir);
 use POSIX ();
 
 our $VERSION = '0.07';
+$VERSION = eval $VERSION;
+
 our @EXPORT_OK = qw(aio_mkpath aio_mktree);
 
 sub aio_mkpath ($$;$) {
@@ -73,6 +75,7 @@ sub aio_mkpath ($$;$) {
 
 *aio_mktree = \&aio_mkpath;
 
+
 1;
 
 __END__
@@ -89,7 +92,8 @@ IO::AIO::Util - useful functions missing from IO::AIO
 
 =head1 DESCRIPTION
 
-This module provides useful functions that are missing from C<IO::AIO::Util>.
+This module provides useful functions that are missing from
+C<IO::AIO::Util>.
 
 =head1 FUNCTIONS
 
@@ -111,8 +115,8 @@ L<IO::AIO|IO::AIO>
 =head1 REQUESTS AND BUGS
 
 Please report any bugs or feature requests to
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=IO-AIO-Util>. I will
-be notified, and then you'll automatically be notified of progress on your bug
+L<http://rt.cpan.org/Public/Bug/Report.html?Queue=IO-AIO-Util>. I will be
+notified, and then you'll automatically be notified of progress on your bug
 as I make changes.
 
 =head1 SUPPORT
@@ -125,6 +129,10 @@ You can also look for information at:
 
 =over
 
+=item * GitHub Source Repository
+
+L<http://github.com/gray/io-aio-util>
+
 =item * AnnoCPAN: Annotated CPAN documentation
 
 L<http://annocpan.org/dist/IO-AIO-Util>
@@ -135,7 +143,7 @@ L<http://cpanratings.perl.org/d/IO-AIO-Util>
 
 =item * RT: CPAN's request tracker
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=IO-AIO-Util>
+L<http://rt.cpan.org/Public/Dist/Display.html?Dist=IO-AIO-Util>
 
 =item * Search CPAN
 
@@ -145,10 +153,10 @@ L<http://search.cpan.org/dist/IO-AIO-Util>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2007 gray <gray at cpan.org>, all rights reserved.
+Copyright (C) 2007-2009 gray <gray at cpan.org>, all rights reserved.
 
-This library is free software; you can redistribute it and/or modify it under
-the same terms as Perl itself.
+This library is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
 
 =head1 AUTHOR
 
