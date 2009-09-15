@@ -1,5 +1,9 @@
 Revision history for IO-AIO-Util
 
+0.08  Tue Sep 15 07:07:01 UTC 2009
+    - Updated behaviour to match that of `mkdir -p` from GNU coreutils.
+    - Fixed sporadically failing test cases under linux.
+
 0.07 Wed May 13 22:26:25 UTC 2009
     - Used warnings and updated prereqs for higher kwalitee.
     - Added link to repository.
