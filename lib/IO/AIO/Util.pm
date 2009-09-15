@@ -2,10 +2,12 @@ package IO::AIO::Util;
 
 use strict;
 use warnings;
-
 use base qw(Exporter);
+
 use IO::AIO 2;
-use File::Spec::Functions qw(splitpath splitdir catpath catdir);
+use File::Spec::Functions qw(
+    canonpath catpath catdir splitdir splitpath updir
+);
 use POSIX ();
 
 our $VERSION = '0.07';
@@ -13,64 +15,46 @@ $VERSION = eval $VERSION;
 
 our @EXPORT_OK = qw(aio_mkpath aio_mktree);
 
-sub aio_mkpath ($$;$) {
+sub aio_mkpath {
     my ($path, $mode, $cb) = @_;
 
     my $pri = aioreq_pri;
     my $grp = aio_group $cb;
 
     # Default is success.
+    local $!;
     $grp->result(0);
 
-    my @make;
-    my $statgrp = add $grp aio_group sub {
-        my $dirgrp = add $grp aio_group;
-        for my $path (@make) {
-            aioreq_pri $pri;
-            add $dirgrp aio_mkdir $path, $mode, sub {
-                if ($_[0]) {
-                    $grp->result($_[0]);
-                    $grp->errno($!);
-                    return $grp->cancel_subs;
-                }
-            };
-        }
-    };
+    # Clean up the path.
+    $path = canonpath($path);
 
     my ($vol, $dir, undef) = splitpath($path, 1);
     my @dirs = splitdir($dir);
 
-    while (@dirs) {
-        my $path = $path;
+    for my $idx (0 .. $#dirs) {
+        # Root and parent directories are assumed to always exist.
+        next if '' eq $dirs[$idx] or updir eq $dirs[$idx];
+
+        my $path = catpath($vol, catdir(@dirs[0 .. $idx]), '');
 
         aioreq_pri $pri;
-        add $statgrp aio_stat $path, sub {
-            # stat was successful
-            if (not $_[0]) {
-                # fail if part of the expected path is not a dir
-                if (not -d _) {
-                    $grp->result(-1);
-                    $grp->errno(&POSIX::ENOTDIR);
-                    return $grp->cancel_subs;
-                }
-                return $statgrp->cancel_subs;
-            }
-            # stat was not succesful, for reason other than non-existence
-            elsif ($_[0] and $! != &POSIX::ENOENT) {
-                $grp->result(-1);
-                $grp->errno($!);
-                return $grp->cancel_subs;
-            }
+        add $grp aio_mkdir $path, $mode, sub {
+            return unless $_[0];
 
-            unshift @make, $path;
+            # Ignore "file exists" errors unless it is the last component,
+            # then stat it to ensure it is a directory. This matches
+            # the behaviour of `mkdir -p` from GNU coreutils.
+            return if &POSIX::EEXIST == $!
+                and not ($idx == $#dirs and not -d $path);
+
+            $grp->cancel_subs;
+            $grp->errno($!);
+            $grp->result($_[0]);
+            return;
         };
     }
-    continue {
-        pop @dirs;
-        $path = catpath($vol, catdir(@dirs), '');
-    }
 
-    $grp;
+    return $grp;
 }
 
 *aio_mktree = \&aio_mkpath;
@@ -108,9 +92,17 @@ directories as required. The status is the same as aio_mkdir.
 
 =back
 
+=head1 NOTES
+
+As this module uses C<IO::AIO>, it is subject to the same underlying
+restrictions. Most importantly, that the pathname parameter be encoded as
+bytes and be absolute, or ensure that the working does not change.
+
+See the documentation for C<IO::AIO> for more details.
+
 =head1 SEE ALSO
 
-L<IO::AIO|IO::AIO>
+L<IO::AIO>
 
 =head1 REQUESTS AND BUGS
 
