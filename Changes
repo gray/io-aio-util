@@ -1,5 +1,10 @@
 Revision history for IO-AIO-Util
 
+0.09  Wed Sep 16 06:39:23 UTC 2009
+    - Stopped creating parent and child directories asynchronously. The resulting
+      race condition was responsible for the sporadic "not found" errors that the
+      previous update intentionally ignored.
+
 0.08  Tue Sep 15 07:07:01 UTC 2009
     - Updated behaviour to match that of `mkdir -p` from GNU coreutils.
     - Fixed sporadically failing test cases under linux.
