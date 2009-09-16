@@ -29,32 +29,36 @@ sub aio_mkpath {
     $path = canonpath($path);
 
     my ($vol, $dir, undef) = splitpath($path, 1);
-    my @dirs = splitdir($dir);
+    my @dir = splitdir($dir);
+    my $idx = 0;
 
-    for my $idx (0 .. $#dirs) {
-        # Root and parent directories are assumed to always exist.
-        next if '' eq $dirs[$idx] or updir eq $dirs[$idx];
+    my $sub; $sub = sub {
+        for (; $idx < @dir; $idx++) {
+            # Root and parent directories are assumed to always exist.
+            last if '' ne $dir[$idx] and updir ne $dir[$idx];
+        }
+        return $grp if @dir <= $idx;
 
-        my $path = catpath($vol, catdir(@dirs[0 .. $idx]), '');
+        my $path = catpath($vol, catdir(@dir[0 .. $idx]), '');
 
         aioreq_pri $pri;
         add $grp aio_mkdir $path, $mode, sub {
-            return unless $_[0];
+            $idx++ and return $sub->() unless $_[0];
 
             # Ignore "file exists" errors unless it is the last component,
             # then stat it to ensure it is a directory. This matches
             # the behaviour of `mkdir -p` from GNU coreutils.
-            return if &POSIX::EEXIST == $!
-                and not ($idx == $#dirs and not -d $path);
+            $idx++ and return $sub->() if &POSIX::EEXIST == $!
+                and not ($idx == $#dir and not -d $path);
 
             $grp->cancel_subs;
             $grp->errno($!);
             $grp->result($_[0]);
-            return;
+            return $grp;
         };
-    }
+    };
 
-    return $grp;
+    return $sub->();
 }
 
 *aio_mktree = \&aio_mkpath;
