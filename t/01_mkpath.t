@@ -53,7 +53,7 @@ ok(-d $tmp, 'creation of temp directory');
     pcb;
 
     aio_mkpath $dir, 0777, sub {
-        is($_[0], 0, "existing path: return status ($!)");
+        is($_[0], 0, 'existing path: return status');
         ok(! $!, "existing path: errno ($!)");
     };
 
@@ -64,14 +64,14 @@ ok(-d $tmp, 'creation of temp directory');
     my (undef, $file) = tempfile(DIR => $tmp);
 
     aio_mkpath $file, 0777, sub {
-        is($_[0], -1, "existing file: return status ($!)");
+        is($_[0], -1, 'existing file: return status');
         is(0 + $!, &POSIX::EEXIST, "existing file: errno ($!)");
     };
 
     my $subdir = catdir($file, 'dir1');
 
     aio_mkpath $subdir, 0777, sub {
-        is($_[0], -1, "subdir of existing file: return status ($!)");
+        is($_[0], -1, 'subdir of existing file: return status');
         is(0 + $!, &POSIX::ENOTDIR, "subdir of existing file: errno ($!)");
     };
 
@@ -79,15 +79,17 @@ ok(-d $tmp, 'creation of temp directory');
 }
 
 SKIP: {
-    skip "cannot test permissions errors as this user", 2
+    skip 'cannot test permissions errors as this user', 2
         unless $> > 0 and $) > 0;
 
-    my $dir = catdir($tmp, qw(dir1 dir2));
-    chmod 0000, $dir or die "$!\n";
-    my $subdir = catdir($dir, 'dir3');
+    my $dir = catdir($tmp, qw(dir2 dir3));
+
+    aio_mkpath $dir, 0755, sub { }; pcb;
+    chmod 0000, $dir or die "$dir: $!\n";
+    my $subdir = catdir($dir, 'dir4');
 
     aio_mkpath $subdir, 0777, sub {
-        is($_[0], -1, "permission denied: return status ($!)");
+        is($_[0], -1, 'permission denied: return status');
         is(0 + $!, &POSIX::EACCES, "permission denied: errno ($!)");
     };
 
@@ -98,15 +100,11 @@ SKIP: {
     skip "cannot test permissions errors as this user", 2
         unless $> > 0 and $) > 0;
 
-    my $dir = catdir($tmp, qw(dir2 dir3));
+    my $dir = catdir($tmp, qw(dir3 dir4));
 
     aio_mkpath $dir, 0111, sub {
-        is($_[0], -1, "bad permissions: return status ($!)");
-        # Linux occasionally errs with "no such file or directory".
-        ok(
-            &POSIX::EACCES == $! || &POSIX::ENOENT == $!,
-            "bad permissions: errno ($!)"
-        );
+        is($_[0], -1, 'bad permissions: return status');
+        ok(&POSIX::EACCES == $!, "bad permissions: errno ($!)");
     };
 
     pcb;
