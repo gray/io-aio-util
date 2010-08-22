@@ -2,7 +2,7 @@ package IO::AIO::Util;
 
 use strict;
 use warnings;
-use base qw(Exporter);
+use parent qw(Exporter);
 
 use IO::AIO 2;
 use File::Spec::Functions qw(

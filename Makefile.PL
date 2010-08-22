@@ -8,11 +8,12 @@ my %conf = (
     LICENSE       => 'perl',
     VERSION_FROM  => 'lib/IO/AIO/Util.pm',
     ABSTRACT_FROM => 'lib/IO/AIO/Util.pm',
-    PREREQ_PM     => {
+    PREREQ_PM => {
         'File::Spec::Functions' => 0,
         'IO::AIO'               => 2,
         'POSIX'                 => 0,
         'Test::More'            => 0,
+        'parent'                => 0,
     },
     META_MERGE    => {
         resources => {
