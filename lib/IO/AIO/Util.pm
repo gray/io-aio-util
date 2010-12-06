@@ -143,7 +143,7 @@ L<http://rt.cpan.org/Public/Dist/Display.html?Dist=IO-AIO-Util>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/IO-AIO-Util>
+L<http://search.cpan.org/dist/IO-AIO-Util/>
 
 =back
 
