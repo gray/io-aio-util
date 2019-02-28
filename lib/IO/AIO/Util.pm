@@ -111,7 +111,7 @@ L<IO::AIO>
 =head1 REQUESTS AND BUGS
 
 Please report any bugs or feature requests to
-L<http://rt.cpan.org/Public/Bug/Report.html?Queue=IO-AIO-Util>. I will be
+L<https://rt.cpan.org/Public/Bug/Report.html?Queue=IO-AIO-Util>. I will be
 notified, and then you'll automatically be notified of progress on your bug
 as I make changes.
 
@@ -127,23 +127,15 @@ You can also look for information at:
 
 =item * GitHub Source Repository
 
-L<http://github.com/gray/io-aio-util>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/IO-AIO-Util>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/IO-AIO-Util>
+L<https://github.com/gray/io-aio-util>
 
 =item * RT: CPAN's request tracker
 
-L<http://rt.cpan.org/Public/Dist/Display.html?Dist=IO-AIO-Util>
+L<https://rt.cpan.org/Public/Dist/Display.html?Dist=IO-AIO-Util>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/IO-AIO-Util/>
+L<https://search.cpan.org/dist/IO-AIO-Util/>
 
 =back
 
@@ -151,8 +143,8 @@ L<http://search.cpan.org/dist/IO-AIO-Util/>
 
 Copyright (C) 2007-2019 gray <gray at cpan.org>, all rights reserved.
 
-This library is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+This library is free software; you can redistribute it and/or modify it under
+the same terms as Perl itself.
 
 =head1 AUTHOR
 
