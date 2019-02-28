@@ -16,7 +16,7 @@ sub pcb {
     }
 }
 
-my $tmp = tempdir(CLEANUP => 1);
+my $tmp = tempdir(cleanup => 1);
 ok(-d $tmp, 'creation of temp directory');
 
 # Test the original aio_mkdir.
@@ -61,7 +61,7 @@ ok(-d $tmp, 'creation of temp directory');
 }
 
 {
-    my (undef, $file) = tempfile(DIR => $tmp);
+    my (undef, $file) = tempfile(dir => $tmp);
 
     aio_mkpath $file, 0777, sub {
         is($_[0], -1, 'existing file: return status');
@@ -72,7 +72,11 @@ ok(-d $tmp, 'creation of temp directory');
 
     aio_mkpath $subdir, 0777, sub {
         is($_[0], -1, 'subdir of existing file: return status');
-        is(0 + $!, &POSIX::ENOTDIR, "subdir of existing file: errno ($!)");
+        is(
+            0 + $!,
+            ($^O eq 'MSWin32') ? &POSIX::ENOENT : &POSIX::ENOTDIR,
+            "subdir of existing file: errno ($!)"
+        );
     };
 
     pcb;
@@ -81,6 +85,8 @@ ok(-d $tmp, 'creation of temp directory');
 SKIP: {
     skip 'cannot test permissions errors as this user', 2
         unless $> > 0 and $) > 0;
+    skip "cygwin permission handling appears to be buggy", 1
+        if $^O eq 'cygwin';
 
     my $dir = catdir($tmp, qw(dir2 dir3));
 
