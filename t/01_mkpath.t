@@ -94,6 +94,7 @@ SKIP: {
     };
 
     pcb;
+    chmod 0755, $dir or die "$dir: $!\n";
 }
 
 SKIP: {
