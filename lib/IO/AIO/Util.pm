@@ -2,8 +2,8 @@ package IO::AIO::Util;
 
 use strict;
 use warnings;
-use parent qw(Exporter);
 
+use Exporter qw(import);
 use IO::AIO 2;
 use File::Spec::Functions qw(
     canonpath catpath catdir splitdir splitpath updir

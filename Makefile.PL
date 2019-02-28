@@ -9,24 +9,28 @@ my %conf = (
     VERSION_FROM  => 'lib/IO/AIO/Util.pm',
     ABSTRACT_FROM => 'lib/IO/AIO/Util.pm',
     PREREQ_PM => {
-        'File::Spec::Functions' => 0,
-        'IO::AIO'               => 2,
-        'POSIX'                 => 0,
-        'Test::More'            => 0,
-        'parent'                => 0,
+        'Exporter'   => '5.57',
+        'IO::AIO'    => 2,
+        'POSIX'      => 0,
+        'Test::More' => 0,
     },
-    META_MERGE    => {
+    META_MERGE     => {
         resources => {
             repository => 'http://github.com/gray/io-aio-util',
         },
     },
-    dist          => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean         => { FILES => 'IO-AIO-Util-*' },
+    dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
+    clean => { FILES    => 'IO-AIO-Util-*' },
 );
 
-unless (eval { ExtUtils::MakeMaker->VERSION(6.46) }) {
-    delete $conf{META_MERGE};
-}
+my $eumm_version =  do {
+    no warnings 'numeric';
+    eval $ExtUtils::MakeMaker::VERSION;
+};
+delete $conf{META_MERGE} if $eumm_version < 6.46;
+$conf{PREREQ_PM} = {
+    %{ $conf{PREREQ_PM} || {} }, %{ delete $conf{BUILD_REQUIRES} },
+} if ($conf{BUILD_REQUIRES} and $eumm_version < 6.5503);
 
 WriteMakefile(%conf);
 
