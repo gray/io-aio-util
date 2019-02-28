@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 20;
+use Test::More;
 use IO::AIO qw(aio_mkdir);
 use IO::AIO::Util qw(aio_mkpath);
 use File::Spec::Functions qw(catdir);
@@ -110,3 +110,5 @@ SKIP: {
 
     pcb;
 }
+
+done_testing;

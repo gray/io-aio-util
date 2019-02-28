@@ -8,12 +8,12 @@ my %conf = (
     LICENSE       => 'perl',
     VERSION_FROM  => 'lib/IO/AIO/Util.pm',
     ABSTRACT_FROM => 'lib/IO/AIO/Util.pm',
-    PREREQ_PM => {
-        'Exporter'   => '5.57',
-        'IO::AIO'    => 2,
-        'POSIX'      => 0,
-        'Test::More' => 0,
+    PREREQ_PM     => {
+        'Exporter' => '5.57',
+        'IO::AIO'  => 2,
+        'POSIX'    => 0,
     },
+    BUILD_REQUIRES => { 'Test::More' => 0.98, },
     META_MERGE     => {
         resources => {
             repository => 'http://github.com/gray/io-aio-util',
