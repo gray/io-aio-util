@@ -3,7 +3,7 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 my %conf = (
-    NAME          => 'IO-AIO-Util',
+    NAME          => 'IO::AIO::Util',
     AUTHOR        => 'gray <gray@cpan.org>',
     LICENSE       => 'perl',
     VERSION_FROM  => 'lib/IO/AIO/Util.pm',
