@@ -10,7 +10,7 @@ use File::Spec::Functions qw(
 );
 use POSIX ();
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 $VERSION = eval $VERSION;
 
 our @EXPORT_OK = qw(aio_mkpath aio_mktree);
