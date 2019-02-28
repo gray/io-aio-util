@@ -8,4 +8,4 @@ if ($@) {
 }
 Test::Perl::Critic->import( -profile => 'xt/perlcriticrc' );
 
-all_critic_ok(qw( ex lib t xt ));
+all_critic_ok(qw( lib t xt ));
